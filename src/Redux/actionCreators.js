@@ -1,6 +1,11 @@
-import { TURN } from './actionConstants';
+import { TURN, CHANGE_GAME_STATUS } from './actionConstants';
 
-export const turnAction = (cell) => ({
+export const turnAction = (cellName) => ({
   type: TURN,
-  cell
+  name: cellName
 });
+
+export const changeGameStatus = (gameStatus) => ({
+  type: CHANGE_GAME_STATUS,
+  gameStatus
+})
