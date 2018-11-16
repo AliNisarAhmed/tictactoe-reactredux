@@ -14,7 +14,11 @@ const defaultState = {
   },
   activePlayer: 'X',
   moves: 0,
-  gameStatus: 'statusTurn' // turn, win & draw
+  gameStatus: 'statusTurn', // turn, win & draw
+  wins: {
+    X: 0,
+    O: 0
+  }
 }
 
 const reducer = (state = defaultState, action) => {
@@ -24,8 +28,10 @@ const reducer = (state = defaultState, action) => {
       let frozen = Object.assign({}, state.frozen, { [action.name]: true });
       let moves = state.moves + 1;
       return {...state, cells, frozen, moves};
+    
     case CHANGE_GAME_STATUS:
       return {...state, gameStatus: action.gameStatus } 
+    
     case CHECK_FOR_WIN:
       if(checkForWin(state.cells)) {
         let gameStatus = 'statusWin';
@@ -34,7 +40,9 @@ const reducer = (state = defaultState, action) => {
         for (let key of Object.keys(frozen)) {
           frozen[key] = true;
         }
-        return {...state, gameStatus, frozen };  
+        let wins = { ...state.wins }
+        wins[state.activePlayer] += 1;
+        return {...state, gameStatus, frozen, wins };  
       } else if (state.moves === 9){
         let gameStatus = 'statusDraw';
         return {...state, gameStatus};
@@ -42,8 +50,25 @@ const reducer = (state = defaultState, action) => {
         let activePlayer = state.activePlayer === "X"? "O": "X";
         return {...state, activePlayer};
       }
+    
     case RESTART: 
-      return {...state, ...defaultState};
+      return {
+        ...state,
+        cells: {
+          1: '', 2: '', 3: '',
+          4: '', 5: '', 6: '',
+          7: '', 8: '', 9: '',
+        },
+        frozen: {
+          1: false, 2: false, 3: false,
+          4: false, 5: false, 6: false,
+          7: false, 8: false, 9: false,
+        },
+        activePlayer: 'X',
+        moves: 0,
+        gameStatus: 'statusTurn',
+      };
+    
     default:
       return state;
   }

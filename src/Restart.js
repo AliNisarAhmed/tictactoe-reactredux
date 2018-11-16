@@ -5,7 +5,7 @@ import { restart } from './Redux/actionCreators';
 function Restart({ gameStatus, restartGame }) {
   return (
     gameStatus === 'statusWin' || gameStatus === 'statusDraw' ?
-    <button className="restart" onClick={restartGame}>Restart Game?</button> :
+    <button className="restart" onClick={restartGame}>Play Again?</button> :
     null
   );
 }
