@@ -1,4 +1,5 @@
-import { TURN, CHANGE_GAME_STATUS } from './actionConstants'
+import { TURN, CHANGE_GAME_STATUS, CHECK_FOR_WIN, RESTART } from './actionConstants';
+import checkForWin from '../helperFunctions/checkForWin';
 
 const defaultState = {
   cells: {
@@ -22,18 +23,27 @@ const reducer = (state = defaultState, action) => {
       let cells = Object.assign({}, state.cells, { [action.name]: state.activePlayer });
       let frozen = Object.assign({}, state.frozen, { [action.name]: true });
       let moves = state.moves + 1;
-      let gameStatus = 'statusTurn';
-      if (moves === 9) {
-        gameStatus = 'statusDraw'
+      return {...state, cells, frozen, moves};
+    case CHANGE_GAME_STATUS:
+      return {...state, gameStatus: action.gameStatus } 
+    case CHECK_FOR_WIN:
+      if(checkForWin(state.cells)) {
+        let gameStatus = 'statusWin';
+        // we need to freeze all the cells now
+        let frozen = {...state.frozen};
+        for (let key of Object.keys(frozen)) {
+          frozen[key] = true;
+        }
+        return {...state, gameStatus, frozen };  
+      } else if (state.moves === 9){
+        let gameStatus = 'statusDraw';
+        return {...state, gameStatus};
+      } else {
+        let activePlayer = state.activePlayer === "X"? "O": "X";
+        return {...state, activePlayer};
       }
-      let activePlayer = state.activePlayer === "X"? "O": "X";
-      // let gameStatus = 'turn';
-      // if (state.moves === 9) {
-      //   gameStatus = 'draw';
-      // }
-      return Object.assign({}, state, {cells}, {moves}, {activePlayer}, {frozen}, {gameStatus});
-    case CHANGE_GAME_STATUS: 
-      return Object.assign({}, state, { gameStatus: action.gameStatus });
+    case RESTART: 
+      return {...state, ...defaultState};
     default:
       return state;
   }

@@ -8,7 +8,11 @@ class GameStatus extends Component {
         {
           this.props.gameStatus === "statusTurn"
           ? `${this.props.activePlayer}'s turn`
-          : 'Game Drawn'
+          : (
+            this.props.gameStatus === 'statusWin' ?
+            `${this.props.activePlayer} wins!!!` :
+            `Game Drawn :(`
+          )
         }
       </div>
     )

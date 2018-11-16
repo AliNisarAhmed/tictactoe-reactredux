@@ -1,6 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux';
+import { turnAction, changeGameStatus, checkForWin } from './Redux/actionCreators';
 
-export default class Cell extends React.Component {
+class Cell extends React.Component {
   
   state = {
     frozen: false
@@ -23,3 +25,25 @@ export default class Cell extends React.Component {
     );
   }
 }
+
+
+
+const mapStateToProps = (state, ownProps) => ({
+  activePlayer: state.activePlayer,
+  frozen: state.frozen[ownProps.name],
+  mark: state.cells[ownProps.name],
+  gameStatus: state.gameStatus
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  handleClick: function(name) {
+    // console.log(`click occurred on ${name}`);
+    dispatch(turnAction(name))
+    dispatch(checkForWin())
+  },
+  changeGameStatus: function(status) {
+    dispatch(changeGameStatus(status));
+  } 
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cell);

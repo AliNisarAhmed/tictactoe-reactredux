@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from './Grid';
 import Scoreboard from './Scoreboard';
+import Restart from './Restart';
 
 import './App.css';
 
@@ -13,6 +14,7 @@ class App extends React.Component {
         </div>
         <Scoreboard />
         <Grid />
+        <Restart />
       </div>
     );
   }
