@@ -1,4 +1,4 @@
-import { TURN, CHANGE_GAME_STATUS, CHECK_FOR_WIN, RESTART } from './actionConstants';
+import { TURN, CHECK_GAME_STATUS, RESTART } from './actionConstants';
 import checkForWin from '../helperFunctions/checkForWin';
 
 const defaultState = {
@@ -24,18 +24,23 @@ const defaultState = {
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
     case TURN:
-      let cells = Object.assign({}, state.cells, { [action.name]: state.activePlayer });
-      let frozen = Object.assign({}, state.frozen, { [action.name]: true });
+      // Turn: 
+      // - updates the cell's display to current active player
+      // - freezes the clicked cell
+      // - increments the move count
+
+      let cells = { ...state.cells, [action.name]: state.activePlayer };
+      let frozen = { ...state.frozen, [action.name]: true };
       let moves = state.moves + 1;
       return {...state, cells, frozen, moves};
-    
-    case CHANGE_GAME_STATUS:
-      return {...state, gameStatus: action.gameStatus } 
-    
-    case CHECK_FOR_WIN:
+      
+    case CHECK_GAME_STATUS:
+      // Check game status
+      // - checks if a player has won, or the game has drawn, else continue the game
+  
       if(checkForWin(state.cells)) {
         let gameStatus = 'statusWin';
-        // we need to freeze all the cells now
+        // if a player has won, we need to freeze all the cells now
         let frozen = {...state.frozen};
         for (let key of Object.keys(frozen)) {
           frozen[key] = true;
