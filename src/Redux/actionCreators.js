@@ -1,4 +1,4 @@
-import { TURN, CHECK_GAME_STATUS, RESTART } from './actionConstants';
+import { TURN, CHECK_GAME_STATUS, RESTART, COMPUTER_TURN } from './actionConstants';
 
 export const turnAction = (cellName) => ({
   type: TURN,
@@ -11,4 +11,8 @@ export const checkGameStatus = () => ({
 
 export const restart = () => ({
   type: RESTART
+});
+
+export const computerTurn = () => ({
+  type: COMPUTER_TURN
 });

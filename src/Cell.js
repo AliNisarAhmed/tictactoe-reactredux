@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { turnAction, checkGameStatus } from './Redux/actionCreators';
+import { turnAction, checkGameStatus, computerTurn } from './Redux/actionCreators';
 
 class Cell extends React.Component {
 
@@ -32,8 +32,9 @@ const mapDispatchToProps = (dispatch) => ({
   handleClick: function(name) {
     // when a cell is clicked, we dispatch two actions, one to account for the turn, one to check for win conditions
     // and update game conditions accordingly
-    dispatch(turnAction(name))
-    dispatch(checkGameStatus())
+    dispatch(turnAction(name));
+    dispatch(checkGameStatus());
+    dispatch(computerTurn());  // after human takes turn, the computer takes its turn
   } 
 });
 

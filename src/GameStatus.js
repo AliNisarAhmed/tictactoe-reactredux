@@ -6,7 +6,7 @@ function GameStatus ({ activePlayer, gameStatus }) {
     <div className={`gameStatus ${gameStatus}`}>
       {
         gameStatus === "statusTurn"
-        ? `${activePlayer}'s turn`
+        ? `${activePlayer === "X" ? "Human" : "Computer"}'s turn`
         : (
           gameStatus === 'statusWin' ?
           `${activePlayer} wins!!!` :
